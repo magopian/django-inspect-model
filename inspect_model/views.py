@@ -1,1 +1,1 @@
-# Create your views here.
+# no views for this app
