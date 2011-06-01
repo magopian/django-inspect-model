@@ -30,7 +30,7 @@ Either:
 
 ::
 
-    pip install -e git://github.com/magopian/django-inspect-model.git#egg=inspect_model
+    pip install git+git://github.com/magopian/django-inspect-model.git
 
 
 Usage

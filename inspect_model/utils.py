@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import inspect
-from django.db.models.manager import Manager
 
 
 # list of methods that check everything other than attributes
@@ -61,6 +60,8 @@ class InspectModel(object):
                 continue
 
             item = getattr(self.model, a)
+
+            from django.db.models.manager import Manager
             if isinstance(item, Manager):
                 continue
             if any([check(item) for check in ALL_BUT_ATTRIBUTES]):
