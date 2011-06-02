@@ -18,7 +18,8 @@ Usage
 
 Instantiate ``inspect_model.InspectModel`` with your model class or instance, and profit.
 
-:: 
+::
+
     >>> from django.contrib.comments.models import Comment
     >>> from inspect_model import InspectModel
     >>> im = InspectModel(Comment)
