@@ -15,6 +15,9 @@ An item is either:
 * a standard attribute
 * a method that only takes one attribute: 'self'
 
+The code is generic enough to be applied on just any python object, so Django
+isn't a requirement. However, it was tailored towards Django models.
+
 The source code is `available on Github`_ under the 3-clause BSD licence.
 
 .. _available on Github: https://github.com/magopian/django-inspect-model
@@ -23,14 +26,9 @@ The source code is `available on Github`_ under the 3-clause BSD licence.
 Installation
 ------------
 
-Either:
-
-* download from Github and place in your python path
-* use pip
-
 ::
 
-    pip install git+git://github.com/magopian/django-inspect-model.git
+    pip install django-inspect-model
 
 
 Usage

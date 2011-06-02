@@ -16,9 +16,7 @@ setup(
     license='BSD licence, see LICENCE file',
     description='Model inspection for Django',
     long_description=open('README.rst').read(),
-    install_requires=[
-        'Django>=1.3',
-    ],
+    install_requires=[],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Web Environment',

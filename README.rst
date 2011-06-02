@@ -10,6 +10,9 @@ An item is either:
 * a standard attribute
 * a method that only takes one attribute: 'self'
 
+The code is generic enough to be applied on just any python object, so Django
+isn't a requirement. However, it was tailored towards Django models.
+
 Usage
 -----
 
