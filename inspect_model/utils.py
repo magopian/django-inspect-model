@@ -61,9 +61,12 @@ class InspectModel(object):
 
             item = getattr(self.model, a)
 
-            from django.db.models.manager import Manager
-            if isinstance(item, Manager):
-                continue
+            try:
+                from django.db.models.manager import Manager
+                if isinstance(item, Manager):
+                    continue
+            except:
+                pass
             if any([check(item) for check in ALL_BUT_ATTRIBUTES]):
                 continue
 
