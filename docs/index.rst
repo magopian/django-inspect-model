@@ -42,11 +42,17 @@ Instantiate ``inspect_model.InspectModel`` with your model class or instance, an
     >>> from inspect_model import InspectModel
     >>> im = InspectModel(Comment)
     >>> im.fields
-    ['id', 'content_type', 'object_pk', 'site', 'user', 'user_name', 'user_email', 'user_url', 'comment', 'submit_date', 'ip_address', 'is_public', 'is_removed']
+    ['id', 'content_type', 'object_pk', 'site', 'user', 'user_name',
+    'user_email', 'user_url', 'comment', 'submit_date', 'ip_address',
+    'is_public', 'is_removed']
     >>> im.attributes
     []
     >>> im.methods
     ['get_as_text', 'get_content_object_url']
+    >>> im.items
+    ['id', 'content_type', 'object_pk', 'site', 'user', 'user_name',
+    'user_email', 'user_url', 'comment', 'submit_date', 'ip_address',
+    'is_public', 'is_removed', 'get_as_text', 'get_content_object_url']
 
 .. toctree::
    :maxdepth: 2
