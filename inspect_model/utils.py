@@ -42,6 +42,7 @@ class InspectModel(object):
         self.fields = self.get_fields()
         self.attributes = self.get_attributes()
         self.methods = self.get_methods()
+        self.items = self.fields + self.attributes + self.methods
 
     def get_fields(self):
         """Return the list fo django.db.models fields"""

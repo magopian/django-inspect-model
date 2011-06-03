@@ -55,6 +55,7 @@ Instantiate ``inspect_model.InspectModel`` with your model class or instance, an
 Changes
 -------
 
+* 0.2: added self.items
 * 0.1: initial version
 
 

@@ -77,16 +77,19 @@ class ModelInspectTest(TestCase):
 
         self.im = InspectModel(self.mti)
 
-    def test_get_fields(self):
+    def test_fields(self):
         # 25 fields + the automatically generated id field
         self.assertEqual(len(self.im.fields), 26)
         self.assertFalse('attribute' in self.im.fields)
         self.assertFalse('_hidden' in self.im.fields)
 
-    def test_get_attributes(self):
+    def test_attributes(self):
         self.assertEqual(len(self.im.attributes), 1)
 
-    def test_get_methods(self):
+    def test_methods(self):
         self.assertEqual(len(self.im.methods), 2)
         self.assertFalse('method_args' in self.im.methods)
         self.assertFalse('_hidden_method' in self.im.methods)
+
+    def test_items(self):
+        self.assertEqual(len(self.im.items), 29)
