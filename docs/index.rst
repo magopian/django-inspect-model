@@ -42,17 +42,20 @@ Instantiate ``inspect_model.InspectModel`` with your model class or instance, an
     >>> from inspect_model import InspectModel
     >>> im = InspectModel(Comment)
     >>> im.fields
-    ['id', 'content_type', 'object_pk', 'site', 'user', 'user_name',
-    'user_email', 'user_url', 'comment', 'submit_date', 'ip_address',
-    'is_public', 'is_removed']
+    ['comment', 'id', 'ip_address', 'is_public', 'is_removed', 'object_pk',
+    'submit_date', 'user_email', 'user_name', 'user_url']
+    >>> im.relation_fields
+    ['content_type', 'site', 'user']
+    >>> im.many_fields
+    ['flags']
     >>> im.attributes
     []
     >>> im.methods
     ['get_as_text', 'get_content_object_url']
     >>> im.items
-    ['id', 'content_type', 'object_pk', 'site', 'user', 'user_name',
-    'user_email', 'user_url', 'comment', 'submit_date', 'ip_address',
-    'is_public', 'is_removed', 'get_as_text', 'get_content_object_url']
+    ['comment', 'content_type', 'flags', 'id', 'ip_address', 'is_public',
+    'is_removed', 'object_pk', 'site', 'submit_date', 'user', 'user_email',
+    'user_name', 'user_url', 'get_as_text', 'get_content_object_url']
 
 .. toctree::
    :maxdepth: 2
@@ -61,6 +64,7 @@ Instantiate ``inspect_model.InspectModel`` with your model class or instance, an
 Changes
 -------
 
+* 0.3: added self.relation_fields and self.many_fields
 * 0.2: added self.items
 * 0.1: initial version
 

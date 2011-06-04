@@ -5,12 +5,15 @@ from django.db import models
 from django.test import TestCase
 from inspect_model import InspectModel
 
+
 class OtherModel(models.Model):
     name = models.CharField(max_length=10, blank=True)
+
 
 class LinkedModel(models.Model):
     name = models.CharField(max_length=10, blank=True)
     toinspect = models.OneToOneField('ModelToInspect', blank=True, null=True)
+
 
 class ModelToInspect(models.Model):
     # "standard" fields
@@ -40,8 +43,11 @@ class ModelToInspect(models.Model):
     # relationship fields
     foreign = models.ForeignKey(OtherModel, blank=True, null=True)
     many = models.ManyToManyField(OtherModel, related_name='many')
-    one = models.OneToOneField(OtherModel, related_name='one', blank=True,
-                                                                     null=True)
+    one = models.OneToOneField(
+            OtherModel, 
+            related_name='one', 
+            blank=True,
+            null=True)
 
     # class attributes
     attribute = 'foo'
@@ -68,6 +74,11 @@ class ModelToInspect(models.Model):
         return 'bar'
 
 
+class ManyRelatedModel(models.Model):
+    name = models.CharField(max_length=10, blank=True)
+    many = models.ManyToManyField(ModelToInspect)
+
+
 class ModelInspectTest(TestCase):
     def setUp(self):
         self.om = OtherModel.objects.create()
@@ -78,10 +89,25 @@ class ModelInspectTest(TestCase):
         self.im = InspectModel(self.mti)
 
     def test_fields(self):
-        # 25 fields + the automatically generated id field
-        self.assertEqual(len(self.im.fields), 26)
+        # 22 fields + the automatically generated id field
+        self.assertEqual(len(self.im.fields), 23)
         self.assertFalse('attribute' in self.im.fields)
         self.assertFalse('_hidden' in self.im.fields)
+
+    def test_relation_fields(self):
+        # 2 'local' fields + a OneToOneField on LinkedModel
+        self.assertEqual(len(self.im.relation_fields), 3)
+        self.assertTrue('foreign' in self.im.relation_fields)
+        self.assertTrue('linkedmodel' in self.im.relation_fields)
+        self.assertTrue('one' in self.im.relation_fields)
+        self.assertFalse('many' in self.im.relation_fields)
+
+    def test_many_fields(self):
+        # 1 local + 1 on the ManyRelatedModel
+        self.assertEqual(len(self.im.many_fields), 2)
+        self.assertTrue('manyrelatedmodel_set' in self.im.many_fields)
+        self.assertTrue('many' in self.im.many_fields)
+        self.assertFalse('one' in self.im.many_fields)
 
     def test_attributes(self):
         self.assertEqual(len(self.im.attributes), 1)
@@ -92,4 +118,6 @@ class ModelInspectTest(TestCase):
         self.assertFalse('_hidden_method' in self.im.methods)
 
     def test_items(self):
-        self.assertEqual(len(self.im.items), 29)
+        # make sure all the items are indeed part of a ModelToInspect instance
+        items = [getattr(self.mti, f) for f in self.im.items]
+        self.assertEqual(len(items), 31)
