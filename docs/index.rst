@@ -53,17 +53,15 @@ Instantiate ``inspect_model.InspectModel`` with your model class or instance, an
     >>> im.methods
     ['get_as_text', 'get_content_object_url']
     >>> im.items
-    ['comment', 'content_type', 'flags', 'id', 'ip_address', 'is_public',
-    'is_removed', 'object_pk', 'site', 'submit_date', 'user', 'user_email',
-    'user_name', 'user_url', 'get_as_text', 'get_content_object_url']
-
-.. toctree::
-   :maxdepth: 2
-
+    ['comment', 'content_type', 'flags', 'get_as_text',
+    'get_content_object_url', 'id', 'ip_address', 'is_public', 'is_removed',
+    'object_pk', 'site', 'submit_date', 'user', 'user_email', 'user_name',
+    'user_url']
 
 Changes
 -------
 
+* 0.4: renamed get_FOO methods to update_FOO, self.items uses a sorted set internally
 * 0.3: added self.relation_fields and self.many_fields
 * 0.2: added self.items
 * 0.1: initial version

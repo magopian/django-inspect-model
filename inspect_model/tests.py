@@ -121,3 +121,15 @@ class ModelInspectTest(TestCase):
         # make sure all the items are indeed part of a ModelToInspect instance
         items = [getattr(self.mti, f) for f in self.im.items]
         self.assertEqual(len(items), 31)
+
+    def test_multiple_calls(self):
+        """Multiple calls to get_FOO"""
+        self.im.update_fields()
+        self.assertEqual(len(self.im.fields), 23)
+        self.assertEqual(len(self.im.relation_fields), 3)
+        self.assertEqual(len(self.im.many_fields), 2)
+        self.im.update_attributes()
+        self.assertEqual(len(self.im.attributes), 1)
+        self.im.update_methods()
+        self.assertEqual(len(self.im.methods), 2)
+        self.assertEqual(len(self.im.items), 31)

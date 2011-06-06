@@ -35,7 +35,7 @@ DJANGO_GENERATED_METHODS = [
 
 class InspectModel(object):
 
-    def __init__(self, model):
+    def __init__(self, model, follow_relations=False):
         self.model = model
         if not inspect.isclass(model):
             self.model = model.__class__
@@ -47,11 +47,11 @@ class InspectModel(object):
         self.methods = [] # standard python class methods
         self.items = [] # groups all of the above for convenience
 
-        self.get_fields()
-        self.get_attributes()
-        self.get_methods()
+        self.update_fields(follow_relations)
+        self.update_attributes()
+        self.update_methods()
 
-    def get_fields(self):
+    def update_fields(self, follow_relations=False):
         """Set the list of django.db.models fields
         
         Three different types of fields:
@@ -60,6 +60,9 @@ class InspectModel(object):
         * many fields: ManyToMany (back and forth)
         
         """
+        self.fields = []
+        self.relation_fields = []
+        self.many_fields = []
         opts = getattr(self.model, '_meta', None)
         if opts:
             for f in opts.get_all_field_names():
@@ -86,8 +89,9 @@ class InspectModel(object):
                     else: # standard field
                         self.add_item(name, self.fields)
 
-    def get_attributes(self):
+    def update_attributes(self):
         """Return the list of class attributes which are not fields"""
+        self.attributes = []
         for a in dir(self.model):
             if a.startswith('_') or a in self.fields:
                 continue
@@ -102,8 +106,9 @@ class InspectModel(object):
                 continue
             self.add_item(a, self.attributes)
 
-    def get_methods(self):
+    def update_methods(self):
         """Return the list of class methods"""
+        self.methods = []
         for m in dir(self.model):
             if m.startswith('_') or m in self.fields:
                 continue
@@ -114,7 +119,10 @@ class InspectModel(object):
 
     def add_item(self, item, item_type):
         item_type.append(item)
-        self.items.append(item)
+        # we only want each item once
+        s = set(self.items)
+        s.add(item)
+        self.items = list(sorted(s))
 
 def is_method_without_args(func):
     """Check if func is a method callable with only one param (self)"""
