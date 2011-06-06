@@ -35,7 +35,7 @@ DJANGO_GENERATED_METHODS = [
 
 class InspectModel(object):
 
-    def __init__(self, model, follow_relations=False):
+    def __init__(self, model):
         self.model = model
         if not inspect.isclass(model):
             self.model = model.__class__
@@ -47,11 +47,11 @@ class InspectModel(object):
         self.methods = [] # standard python class methods
         self.items = [] # groups all of the above for convenience
 
-        self.update_fields(follow_relations)
+        self.update_fields()
         self.update_attributes()
         self.update_methods()
 
-    def update_fields(self, follow_relations=False):
+    def update_fields(self):
         """Set the list of django.db.models fields
         
         Three different types of fields:
