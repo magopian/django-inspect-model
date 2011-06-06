@@ -68,11 +68,6 @@ class InspectModel(object):
             for f in opts.get_all_field_names():
                 field, model, direct, m2m = opts.get_field_by_name(f)
                 name = field.name
-                """
-                if direct: # field from this model
-                    if field.rel:
-                        pass
-                """
                 if not direct: # relation or many field from another model
                     name = field.get_accessor_name()
                     field = field.field
