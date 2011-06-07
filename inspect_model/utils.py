@@ -33,6 +33,7 @@ DJANGO_GENERATED_METHODS = [
     'validate_unique'
 ]
 
+
 class InspectModel(object):
 
     def __init__(self, model):
@@ -53,12 +54,12 @@ class InspectModel(object):
 
     def update_fields(self):
         """Set the list of django.db.models fields
-        
+
         Three different types of fields:
         * standard model fields: Char, Integer...
         * relation fields: OneToOne (back and forth) and ForeignKey
         * many fields: ManyToMany (back and forth)
-        
+
         """
         self.fields = []
         self.relation_fields = []
@@ -119,6 +120,7 @@ class InspectModel(object):
         s.add(item)
         self.items = list(sorted(s))
 
+
 def is_method_without_args(func):
     """Check if func is a method callable with only one param (self)"""
     if not inspect.ismethod(func):
@@ -127,4 +129,3 @@ def is_method_without_args(func):
     if defaults:
         args = args[:-len(defaults)] # args with defaults don't count
     return len(args) == 1
-
