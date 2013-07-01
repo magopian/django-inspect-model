@@ -119,7 +119,7 @@ class InspectModel(object):
         """Return the list of properties"""
         self.properties = []
         for name in dir(self.model):
-            if isinstance(getattr(self.model, name,None), property):
+            if isinstance(getattr(self.model, name, None), property):
                 self.add_item(name, self.properties)
        
     def add_item(self, item, item_type):
