@@ -3,5 +3,7 @@
 
 from inspect_model.utils import InspectModel
 
+pkg_resources = __import__('pkg_resources')
+distribution = pkg_resources.get_distribution('django-inspect-model')
 
-__version__ = '0.4'
+__version__ = distribution.version

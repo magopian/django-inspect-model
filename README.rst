@@ -45,6 +45,6 @@ Instantiate ``inspect_model.InspectModel`` with your model class or instance, an
 
 * Authors: https://github.com/magopian/django-inspect-model/graphs/contributors
 * Licence: BSD
-* Compatibility: Django 1.3+
+* Compatibility: Python 2.7, Django 1.3+
 * Requirements: none
 * Documentation: http://django-inspect-model.readthedocs.org/en/latest/
