@@ -14,7 +14,6 @@ test: bin/django-admin.py
 	bin/django-admin.py test --settings=inspect_model.test_settings
 
 flake8: bin/flake8
-	bin/pip install flake8
 	bin/flake8 inspect_model
 
 docs:

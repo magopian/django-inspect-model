@@ -45,17 +45,17 @@ class ModelToInspect(models.Model):
     foreign = models.ForeignKey(OtherModel, blank=True, null=True)
     many = models.ManyToManyField(OtherModel, related_name='many')
     one = models.OneToOneField(
-            OtherModel,
-            related_name='one',
-            blank=True,
-            null=True)
+        OtherModel,
+        related_name='one',
+        blank=True,
+        null=True)
 
     # class attributes
     attribute = 'foo'
     _hidden = 'bar'
 
     # class methods that can be called "as is"
-    def __unicode__(self): # implicit calling by printing
+    def __unicode__(self):  # implicit calling by printing
         return 'model to inspect'
 
     def method_one_arg(self):
@@ -73,10 +73,11 @@ class ModelToInspect(models.Model):
 
     def _hidden_method(self):
         return 'bar'
-    
+
     @property
     def a_property(self):
         return 'bar'
+
 
 class ManyRelatedModel(models.Model):
     name = models.CharField(max_length=10, blank=True)

@@ -41,13 +41,13 @@ class InspectModel(object):
         if not inspect.isclass(model):
             self.model = model.__class__
 
-        self.fields = [] # standard django model fields
-        self.relation_fields = [] # OneToOne or ForeignKey fields
-        self.many_fields = [] # ManyToMany fields
-        self.attributes = [] # standard python class attributes
-        self.methods = [] # standard python class methods
-        self.items = [] # groups all of the above for convenience
-        self.properties = []
+        self.fields = []  # standard django model fields
+        self.relation_fields = []  # OneToOne or ForeignKey fields
+        self.many_fields = []  # ManyToMany fields
+        self.attributes = []  # standard python class attributes
+        self.methods = []  # standard python class methods
+        self.items = []  # groups all of the above for convenience
+        self.properties = []  # properties
 
         self.update_fields()
         self.update_attributes()
@@ -71,20 +71,20 @@ class InspectModel(object):
             for f in opts.get_all_field_names():
                 field, model, direct, m2m = opts.get_field_by_name(f)
                 name = field.name
-                if not direct: # relation or many field from another model
+                if not direct:  # relation or many field from another model
                     name = field.get_accessor_name()
                     field = field.field
-                    if field.rel.multiple: # m2m or fk to this model
+                    if field.rel.multiple:  # m2m or fk to this model
                         self.add_item(name, self.many_fields)
-                    else: # o2o
+                    else:  # one to one
                         self.add_item(name, self.relation_fields)
-                else: # relation, many or field from this model
-                    if field.rel: # relation or many field
-                        if hasattr(field.rel, 'through'): # m2m
+                else:  # relation, many or field from this model
+                    if field.rel:  # relation or many field
+                        if hasattr(field.rel, 'through'):  # m2m
                             self.add_item(name, self.many_fields)
                         else:
                             self.add_item(name, self.relation_fields)
-                    else: # standard field
+                    else:  # standard field
                         self.add_item(name, self.fields)
 
     def update_attributes(self):
@@ -121,7 +121,7 @@ class InspectModel(object):
         for name in dir(self.model):
             if isinstance(getattr(self.model, name, None), property):
                 self.add_item(name, self.properties)
-       
+
     def add_item(self, item, item_type):
         item_type.append(item)
         # we only want each item once
@@ -136,5 +136,5 @@ def is_method_without_args(func):
         return False
     args, var, named, defaults = inspect.getargspec(func)
     if defaults:
-        args = args[:-len(defaults)] # args with defaults don't count
+        args = args[:-len(defaults)]  # args with defaults don't count
     return len(args) == 1
