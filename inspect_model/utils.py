@@ -47,10 +47,12 @@ class InspectModel(object):
         self.attributes = [] # standard python class attributes
         self.methods = [] # standard python class methods
         self.items = [] # groups all of the above for convenience
+        self.properties = []
 
         self.update_fields()
         self.update_attributes()
         self.update_methods()
+        self.update_properties()
 
     def update_fields(self):
         """Set the list of django.db.models fields
@@ -113,6 +115,13 @@ class InspectModel(object):
             if is_method_without_args(getattr(self.model, m, None)):
                 self.add_item(m, self.methods)
 
+    def update_properties(self):
+        """Return the list of properties"""
+        self.properties = []
+        for name in dir(self.model):
+            if isinstance(getattr(self.model, name, None), property):
+                self.add_item(name, self.properties)
+       
     def add_item(self, item, item_type):
         item_type.append(item)
         # we only want each item once

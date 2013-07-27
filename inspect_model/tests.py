@@ -72,7 +72,10 @@ class ModelToInspect(models.Model):
 
     def _hidden_method(self):
         return 'bar'
-
+    
+    @property
+    def a_property(self):
+        return 'bar'
 
 class ManyRelatedModel(models.Model):
     name = models.CharField(max_length=10, blank=True)
@@ -112,6 +115,9 @@ class ModelInspectTest(TestCase):
 
     def test_attributes(self):
         self.assertEqual(len(self.im.attributes), 1)
+
+    def test_properties(self):
+        self.assertEqual(len(self.im.properties), 1)
 
     def test_methods(self):
         self.assertEqual(len(self.im.methods), 2)
