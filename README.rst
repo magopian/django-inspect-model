@@ -3,7 +3,7 @@ Django-inspect-model
 
 * Authors: https://github.com/magopian/django-inspect-model/graphs/contributors
 * Licence: BSD
-* Compatibility: Python 2.7, Django 1.3+
+* Compatibility: Python 2.7, Python 3.3, Django 1.3+
 * Requirements: none
 * Documentation: http://django-inspect-model.readthedocs.org/en/latest/
 
@@ -69,7 +69,8 @@ Setup your environment:
     git clone https://github.com/magopian/django-inspect-model.git
     cd django-inspect-model
 
-Hack and run the tests using django:
+Hack and run the tests using `Tox <https://pypi.python.org/pypi/tox>`_ to test
+on all the supported python and Django versions:
 
 ::
 

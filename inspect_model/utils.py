@@ -132,7 +132,7 @@ class InspectModel(object):
 
 def is_method_without_args(func):
     """Check if func is a method callable with only one param (self)"""
-    if not inspect.ismethod(func):
+    if not inspect.isfunction(func) and not inspect.ismethod(func):
         return False
     args, var, named, defaults = inspect.getargspec(func)
     if defaults:
