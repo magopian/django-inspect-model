@@ -13,7 +13,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     url='https://github.com/magopian/django-inspect-model',
-    license='BSD licence, see LICENCE file',
+    license='BSD license, see LICENSE file',
     description='Model inspection for Django',
     long_description=open('README.rst').read(),
     install_requires=[],
