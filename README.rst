@@ -5,11 +5,14 @@ Django-inspect-model
    :alt: Build Status
    :target: https://travis-ci.org/magopian/django-inspect-model
 
-* Authors: https://github.com/magopian/django-inspect-model/graphs/contributors
+* Authors: Mathieu Agopian and contributors_
 * Licence: BSD
 * Compatibility: Python 2.7, Python 3.3, Django 1.3+
 * Requirements: none
+* Project URL: https://github.com/magopian/django-inspect-model/
 * Documentation: http://django-inspect-model.readthedocs.org/en/latest/
+
+.. _contributors: https://github.com/magopian/django-inspect-model/contributors
 
 Django-inspect-model is a model inspection utility for Django. It allows you to
 easily list all available "items" on a model, and get their value.
