@@ -9,6 +9,7 @@ An item is either:
 * a django field (standard field or relation field)
 * a standard attribute
 * a method that only takes one attribute: 'self'
+* a property
 
 The code is generic enough to be applied on just any python object, so Django
 isn't a requirement. However, it was tailored towards Django models.
@@ -34,12 +35,15 @@ Instantiate ``inspect_model.InspectModel`` with your model class or instance, an
     []
     >>> im.methods
     ['get_as_text', 'get_content_object_url']
+    >>> im.properties
+    ['email', 'name', 'pk', 'url', 'userinfo']
     >>> im.items
-    ['comment', 'content_type', 'flags', 'id', 'ip_address', 'is_public',
-    'is_removed', 'object_pk', 'site', 'submit_date', 'user', 'user_email',
-    'user_name', 'user_url', 'get_as_text', 'get_content_object_url']
+    ['comment', 'content_type', 'email', 'flags', 'get_as_text',
+    'get_content_object_url', u'id', 'ip_address', 'is_public', 'is_removed',
+    'name', 'object_pk', 'pk', 'site', 'submit_date', 'url', 'user',
+    'user_email', 'user_name', 'user_url', 'userinfo']
 
-* Authors: see AUTHORS
+* Authors: https://github.com/magopian/django-inspect-model/graphs/contributors
 * Licence: BSD
 * Compatibility: Django 1.3+
 * Requirements: none
