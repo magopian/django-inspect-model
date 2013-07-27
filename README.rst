@@ -1,6 +1,10 @@
 Django-inspect-model
 ====================
 
+.. image:: https://secure.travis-ci.org/magopian/django-inspect-model.png?branch=master
+   :alt: Build Status
+   :target: https://travis-ci.org/magopian/django-inspect-model
+
 * Authors: https://github.com/magopian/django-inspect-model/graphs/contributors
 * Licence: BSD
 * Compatibility: Python 2.7, Python 3.3, Django 1.3+
