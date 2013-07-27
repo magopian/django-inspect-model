@@ -29,7 +29,8 @@ class ModelToInspect(models.Model):
     filefield = models.FileField(upload_to='media', max_length=100, blank=True)
     filepath = models.FilePathField(path="/tmp", blank=True)
     floatfield = models.FloatField(blank=True, null=True)
-    image = models.ImageField(upload_to='media', blank=True)
+    # do not test image, as it needs the PIL or Pillow dependency
+    #image = models.ImageField(upload_to='media', blank=True)
     intfield = models.IntegerField(blank=True, null=True)
     ipaddress = models.IPAddressField(blank=True, null=True)
     nullboolean = models.NullBooleanField(blank=True, null=True)
@@ -93,8 +94,8 @@ class ModelInspectTest(TestCase):
         self.im = InspectModel(self.mti)
 
     def test_fields(self):
-        # 22 fields + the automatically generated id field
-        self.assertEqual(len(self.im.fields), 23)
+        # 21 fields + the automatically generated id field
+        self.assertEqual(len(self.im.fields), 22)
         self.assertFalse('attribute' in self.im.fields)
         self.assertFalse('_hidden' in self.im.fields)
 
@@ -117,7 +118,7 @@ class ModelInspectTest(TestCase):
         self.assertEqual(len(self.im.attributes), 1)
 
     def test_properties(self):
-        self.assertEqual(len(self.im.properties), 1)
+        self.assertEqual(len(self.im.properties), 2)
 
     def test_methods(self):
         self.assertEqual(len(self.im.methods), 2)
@@ -127,16 +128,16 @@ class ModelInspectTest(TestCase):
     def test_items(self):
         # make sure all the items are indeed part of a ModelToInspect instance
         items = [getattr(self.mti, f) for f in self.im.items]
-        self.assertEqual(len(items), 31)
+        self.assertEqual(len(items), 32)
 
     def test_multiple_calls(self):
         """Multiple calls to get_FOO"""
         self.im.update_fields()
-        self.assertEqual(len(self.im.fields), 23)
+        self.assertEqual(len(self.im.fields), 22)
         self.assertEqual(len(self.im.relation_fields), 3)
         self.assertEqual(len(self.im.many_fields), 2)
         self.im.update_attributes()
         self.assertEqual(len(self.im.attributes), 1)
         self.im.update_methods()
         self.assertEqual(len(self.im.methods), 2)
-        self.assertEqual(len(self.im.items), 31)
+        self.assertEqual(len(self.im.items), 32)

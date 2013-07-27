@@ -1,6 +1,12 @@
 Django-inspect-model
 ====================
 
+* Authors: https://github.com/magopian/django-inspect-model/graphs/contributors
+* Licence: BSD
+* Compatibility: Python 2.7, Django 1.3+
+* Requirements: none
+* Documentation: http://django-inspect-model.readthedocs.org/en/latest/
+
 Django-inspect-model is a model inspection utility for Django. It allows you to
 easily list all available "items" on a model, and get their value.
 
@@ -13,6 +19,16 @@ An item is either:
 
 The code is generic enough to be applied on just any python object, so Django
 isn't a requirement. However, it was tailored towards Django models.
+
+Install
+-------
+
+Using pip:
+
+::
+
+    pip install django-inspect-model
+
 
 Usage
 -----
@@ -43,8 +59,24 @@ Instantiate ``inspect_model.InspectModel`` with your model class or instance, an
     'name', 'object_pk', 'pk', 'site', 'submit_date', 'url', 'user',
     'user_email', 'user_name', 'user_url', 'userinfo']
 
-* Authors: https://github.com/magopian/django-inspect-model/graphs/contributors
-* Licence: BSD
-* Compatibility: Python 2.7, Django 1.3+
-* Requirements: none
-* Documentation: http://django-inspect-model.readthedocs.org/en/latest/
+Hacking
+=======
+
+Setup your environment:
+
+::
+
+    git clone https://github.com/magopian/django-inspect-model.git
+    cd django-inspect-model
+
+Hack and run the tests using django:
+
+::
+
+    make test
+
+To build the docs:
+
+::
+
+    make docs
