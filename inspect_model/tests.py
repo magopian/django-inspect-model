@@ -3,6 +3,8 @@
 
 from django.db import models
 from django.test import TestCase
+from django.contrib.contenttypes.models import ContentType
+
 from inspect_model import InspectModel
 
 
@@ -43,6 +45,10 @@ class ModelToInspect(models.Model):
     url = models.URLField(blank=True)
     # relationship fields
     foreign = models.ForeignKey(OtherModel, blank=True, null=True)
+    
+    content_type = models.ForeignKey(ContentType)
+    genericforeign = generic.GenericForeignKey('content_type', 'positiveint')
+
     many = models.ManyToManyField(OtherModel, related_name='many')
     one = models.OneToOneField(
         OtherModel,
@@ -88,7 +94,8 @@ class ModelInspectTest(TestCase):
 
     def setUp(self):
         self.om = OtherModel.objects.create()
-        self.mti = ModelToInspect.objects.create(foreign=self.om, one=self.om)
+        ctype = ContentType.objects.get_for_model(OtherModel)
+        self.mti = ModelToInspect.objects.create(foreign=self.om, one=self.om, content_type=ctype)
         self.mti.many.add(self.om)
         self.lm = LinkedModel.objects.create(toinspect=self.mti)
 
@@ -102,9 +109,11 @@ class ModelInspectTest(TestCase):
 
     def test_relation_fields(self):
         # 2 'local' fields + a OneToOneField on LinkedModel
-        self.assertEqual(len(self.im.relation_fields), 3)
+        self.assertEqual(len(self.im.relation_fields), 5)
         self.assertTrue('foreign' in self.im.relation_fields)
-        self.assertTrue('linkedmodel' in self.im.relation_fields)
+        self.assertTrue('content_type' in self.im.relation_fields) genericforeign
+        self.assertTrue('genericforeign' in self.im.relation_fields) 
+        self.assertTrue('linkedmodel' in self.im.relation_fields) 
         self.assertTrue('one' in self.im.relation_fields)
         self.assertFalse('many' in self.im.relation_fields)
 
