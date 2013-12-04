@@ -86,7 +86,7 @@ class InspectModel(object):
                         else:
                             self.add_item(name, self.relation_fields)
                     else:  # standard field
-                        self.add_item(name, self.field)
+                        self.add_item(name, self.fields)
             for f in opts.virtual_fields:
                 if isinstance(f, GenericForeignKey):
                     self.add_item(f.name, self.relation_fields)
