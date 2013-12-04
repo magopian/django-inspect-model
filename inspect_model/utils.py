@@ -90,7 +90,6 @@ class InspectModel(object):
             for f in opts.virtual_fields:
                 if isinstance(f, GenericForeignKey):
                     self.add_item(f.name, self.relation_fields)
-            
 
     def update_attributes(self):
         """Return the list of class attributes which are not fields"""
