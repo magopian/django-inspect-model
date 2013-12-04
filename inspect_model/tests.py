@@ -111,7 +111,7 @@ class ModelInspectTest(TestCase):
         # 2 'local' fields + a OneToOneField on LinkedModel
         self.assertEqual(len(self.im.relation_fields), 5)
         self.assertTrue('foreign' in self.im.relation_fields)
-        self.assertTrue('content_type' in self.im.relation_fields) genericforeign
+        self.assertTrue('content_type' in self.im.relation_fields)
         self.assertTrue('genericforeign' in self.im.relation_fields) 
         self.assertTrue('linkedmodel' in self.im.relation_fields) 
         self.assertTrue('one' in self.im.relation_fields)
