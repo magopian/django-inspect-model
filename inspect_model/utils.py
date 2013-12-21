@@ -23,7 +23,7 @@ ALL_BUT_ATTRIBUTES = [
     inspect.ismemberdescriptor,
 ]
 
-DJANGO_GENERATED_METHODS = [
+DJANGO_GENERATED_METHODS = set([
     'clean',
     'clean_fields',
     'delete',
@@ -31,7 +31,7 @@ DJANGO_GENERATED_METHODS = [
     'save',
     'save_base',
     'validate_unique'
-]
+])
 
 
 class InspectModel(object):
@@ -47,6 +47,7 @@ class InspectModel(object):
         self.attributes = []  # standard python class attributes
         self.methods = []  # standard python class methods
         self.items = []  # groups all of the above for convenience
+        self._set_items = set() # set of items
         self.properties = []  # properties
 
         self.update_fields()
@@ -70,39 +71,36 @@ class InspectModel(object):
         if opts:
             for f in opts.get_all_field_names():
                 field, model, direct, m2m = opts.get_field_by_name(f)
-                name = field.name
                 if not direct:  # relation or many field from another model
                     name = field.get_accessor_name()
                     field = field.field
                     if field.rel.multiple:  # m2m or fk to this model
-                        self.add_item(name, self.many_fields)
+                        self._add_item(name, self.many_fields)
                     else:  # one to one
-                        self.add_item(name, self.relation_fields)
+                        self._add_item(name, self.relation_fields)
                 else:  # relation, many or field from this model
+                    name = field.name
                     if field.rel:  # relation or many field
                         if hasattr(field.rel, 'through'):  # m2m
-                            self.add_item(name, self.many_fields)
+                            self._add_item(name, self.many_fields)
                         else:
-                            self.add_item(name, self.relation_fields)
+                            self._add_item(name, self.relation_fields)
                     else:  # standard field
-                        self.add_item(name, self.fields)
+                        self._add_item(name, self.fields)
 
     def update_attributes(self):
         """Return the list of class attributes which are not fields"""
         self.attributes = []
+        from django.db.models.manager import Manager
         for a in dir(self.model):
             if a.startswith('_') or a in self.fields:
                 continue
             item = getattr(self.model, a, None)
-            try:
-                from django.db.models.manager import Manager
-                if isinstance(item, Manager):
-                    continue
-            except:
-                pass
+            if isinstance(item, Manager):
+                continue
             if any([check(item) for check in ALL_BUT_ATTRIBUTES]):
                 continue
-            self.add_item(a, self.attributes)
+            self._add_item(a, self.attributes)
 
     def update_methods(self):
         """Return the list of class methods"""
@@ -113,21 +111,21 @@ class InspectModel(object):
             if m in DJANGO_GENERATED_METHODS:
                 continue
             if is_method_without_args(getattr(self.model, m, None)):
-                self.add_item(m, self.methods)
+                self._add_item(m, self.methods)
 
     def update_properties(self):
         """Return the list of properties"""
         self.properties = []
         for name in dir(self.model):
             if isinstance(getattr(self.model, name, None), property):
-                self.add_item(name, self.properties)
+                self._add_item(name, self.properties)
 
-    def add_item(self, item, item_type):
+    def _add_item(self, item, item_type):
         item_type.append(item)
         # we only want each item once
-        s = set(self.items)
-        s.add(item)
-        self.items = list(sorted(s))
+        if not item in self._set_items:
+            self._set_items.add(item)
+            self.items = list(sorted(self._set_items))
 
 
 def is_method_without_args(func):
