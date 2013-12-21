@@ -42,7 +42,7 @@ class InspectModel(object):
             self.model = model.__class__
 
         self.fields = []  # standard django model fields
-        self.relation_fields = []  # OneToOne or ForeignKey fields
+        self.relation_fields = []  # OneToOne, ForeignKey, or GenericForeignKey fields
         self.many_fields = []  # ManyToMany fields
         self.attributes = []  # standard python class attributes
         self.methods = []  # standard python class methods
@@ -60,10 +60,11 @@ class InspectModel(object):
 
         Three different types of fields:
         * standard model fields: Char, Integer...
-        * relation fields: OneToOne (back and forth) and ForeignKey
+        * relation fields: OneToOne (back and forth), ForeignKey, and GenericForeignKey
         * many fields: ManyToMany (back and forth)
 
         """
+        from django.contrib.contenttypes.generic import GenericForeignKey
         self.fields = []
         self.relation_fields = []
         self.many_fields = []
@@ -87,6 +88,9 @@ class InspectModel(object):
                             self._add_item(name, self.relation_fields)
                     else:  # standard field
                         self._add_item(name, self.fields)
+            for f in opts.virtual_fields:
+                if isinstance(f, GenericForeignKey):
+                    self._add_item(f.name, self.relation_fields)
 
     def update_attributes(self):
         """Return the list of class attributes which are not fields"""
