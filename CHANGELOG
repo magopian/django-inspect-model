@@ -1,8 +1,12 @@
 Changelog
 =========
 
-0.7 (unreleased)
+0.7 (2014-09-15)
 ----------------
+
+* now compatible with Django1.7
+* don't require Django, so it may be used on any python code
+* small optimizations (use sets instead of lists)
 
 
 0.6 (2014-09-15)
