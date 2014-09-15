@@ -7,7 +7,7 @@ Django-inspect-model
 
 * Authors: Mathieu Agopian and contributors_
 * Licence: BSD
-* Compatibility: Python 2.7, Python 3.3, Django 1.3+
+* Compatibility: Python 2.6, Python 2.7, Python 3.3, Python 3.4, Django 1.3+
 * Requirements: none
 * Project URL: https://github.com/magopian/django-inspect-model/
 * Documentation: http://django-inspect-model.readthedocs.org/en/latest/

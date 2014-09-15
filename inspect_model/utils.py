@@ -24,6 +24,7 @@ ALL_BUT_ATTRIBUTES = [
 ]
 
 DJANGO_GENERATED_METHODS = set([
+    'check',
     'clean',
     'clean_fields',
     'delete',
@@ -41,14 +42,14 @@ class InspectModel(object):
         if not inspect.isclass(model):
             self.model = model.__class__
 
-        self.fields = []  # standard django model fields
+        self.fields = set()  # standard django model fields
         # OneToOne, ForeignKey, or GenericForeignKey fields
-        self.relation_fields = []
-        self.many_fields = []  # ManyToMany fields
-        self.attributes = []  # standard python class attributes
-        self.methods = []  # standard python class methods
-        self.items = []  # groups all of the above for convenience
-        self.properties = []  # properties
+        self.relation_fields = set()
+        self.many_fields = set()  # ManyToMany fields
+        self.attributes = set()  # standard python class attributes
+        self.methods = set()  # standard python class methods
+        self.items = set()  # groups all of the above for convenience
+        self.properties = set()  # properties
 
         self.update_fields()
         self.update_attributes()
@@ -65,10 +66,9 @@ class InspectModel(object):
         * many fields: ManyToMany (back and forth)
 
         """
-        from django.contrib.contenttypes.generic import GenericForeignKey
-        self.fields = []
-        self.relation_fields = []
-        self.many_fields = []
+        self.fields = set()
+        self.relation_fields = set()
+        self.many_fields = set()
         opts = getattr(self.model, '_meta', None)
         if opts:
             for f in opts.get_all_field_names():
@@ -89,27 +89,35 @@ class InspectModel(object):
                             self._add_item(name, self.relation_fields)
                     else:  # standard field
                         self._add_item(name, self.fields)
-            for f in opts.virtual_fields:
-                if isinstance(f, GenericForeignKey):
-                    self._add_item(f.name, self.relation_fields)
+            try:
+                from django.contrib.contenttypes.generic import (
+                    GenericForeignKey)
+                for f in opts.virtual_fields:
+                    if isinstance(f, GenericForeignKey):
+                        self._add_item(f.name, self.relation_fields)
+            except ImportError:
+                pass
 
     def update_attributes(self):
         """Return the list of class attributes which are not fields"""
-        self.attributes = []
-        from django.db.models.manager import Manager
+        self.attributes = set()
         for a in dir(self.model):
             if a.startswith('_') or a in self.fields:
                 continue
             item = getattr(self.model, a, None)
-            if isinstance(item, Manager):
-                continue
+            try:
+                from django.db.models.manager import Manager
+                if isinstance(item, Manager):
+                    continue
+            except ImportError:
+                pass
             if any([check(item) for check in ALL_BUT_ATTRIBUTES]):
                 continue
             self._add_item(a, self.attributes)
 
     def update_methods(self):
         """Return the list of class methods"""
-        self.methods = []
+        self.methods = set()
         for m in dir(self.model):
             if m.startswith('_') or m in self.fields:
                 continue
@@ -120,17 +128,14 @@ class InspectModel(object):
 
     def update_properties(self):
         """Return the list of properties"""
-        self.properties = []
+        self.properties = set()
         for name in dir(self.model):
             if isinstance(getattr(self.model, name, None), property):
                 self._add_item(name, self.properties)
 
     def _add_item(self, item, item_type):
-        item_type.append(item)
-        # we only want each item once
-        s = set(self.items)
-        s.add(item)
-        self.items = list(sorted(s))
+        item_type.add(item)
+        self.items.add(item)
 
 
 def is_method_without_args(func):

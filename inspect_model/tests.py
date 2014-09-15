@@ -110,7 +110,7 @@ class ModelInspectTest(TestCase):
         self.assertFalse('_hidden' in self.im.fields)
 
     def test_relation_fields(self):
-        # 2 'local' fields + a OneToOneField on LinkedModel
+        # 2 'local' fields + a OneToOneField on LinkedModel + GenericFK + CT.
         self.assertEqual(len(self.im.relation_fields), 5)
         self.assertTrue('foreign' in self.im.relation_fields)
         self.assertTrue('content_type' in self.im.relation_fields)
