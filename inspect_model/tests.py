@@ -49,7 +49,7 @@ class ModelToInspect(models.Model):
 
     content_type = models.ForeignKey(ContentType)
     genericforeign = generic.GenericForeignKey('content_type', 'positiveint')
-    
+
     many = models.ManyToManyField(OtherModel, related_name='many')
     one = models.OneToOneField(
         OtherModel,
@@ -96,7 +96,8 @@ class ModelInspectTest(TestCase):
     def setUp(self):
         self.om = OtherModel.objects.create()
         ctype = ContentType.objects.get_for_model(OtherModel)
-        self.mti = ModelToInspect.objects.create(foreign=self.om, one=self.om, content_type=ctype)
+        self.mti = ModelToInspect.objects.create(
+            foreign=self.om, one=self.om, content_type=ctype)
         self.mti.many.add(self.om)
         self.lm = LinkedModel.objects.create(toinspect=self.mti)
 
@@ -113,8 +114,8 @@ class ModelInspectTest(TestCase):
         self.assertEqual(len(self.im.relation_fields), 5)
         self.assertTrue('foreign' in self.im.relation_fields)
         self.assertTrue('content_type' in self.im.relation_fields)
-        self.assertTrue('genericforeign' in self.im.relation_fields) 
-        self.assertTrue('linkedmodel' in self.im.relation_fields) 
+        self.assertTrue('genericforeign' in self.im.relation_fields)
+        self.assertTrue('linkedmodel' in self.im.relation_fields)
         self.assertTrue('one' in self.im.relation_fields)
         self.assertFalse('many' in self.im.relation_fields)
 

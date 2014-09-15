@@ -42,12 +42,12 @@ class InspectModel(object):
             self.model = model.__class__
 
         self.fields = []  # standard django model fields
-        self.relation_fields = []  # OneToOne, ForeignKey, or GenericForeignKey fields
+        # OneToOne, ForeignKey, or GenericForeignKey fields
+        self.relation_fields = []
         self.many_fields = []  # ManyToMany fields
         self.attributes = []  # standard python class attributes
         self.methods = []  # standard python class methods
         self.items = []  # groups all of the above for convenience
-        self._set_items = set() # set of items
         self.properties = []  # properties
 
         self.update_fields()
@@ -60,7 +60,8 @@ class InspectModel(object):
 
         Three different types of fields:
         * standard model fields: Char, Integer...
-        * relation fields: OneToOne (back and forth), ForeignKey, and GenericForeignKey
+        * relation fields: OneToOne (back and forth), ForeignKey,
+          and GenericForeignKey
         * many fields: ManyToMany (back and forth)
 
         """
@@ -127,9 +128,9 @@ class InspectModel(object):
     def _add_item(self, item, item_type):
         item_type.append(item)
         # we only want each item once
-        if not item in self._set_items:
-            self._set_items.add(item)
-            self.items = list(sorted(self._set_items))
+        s = set(self.items)
+        s.add(item)
+        self.items = list(sorted(s))
 
 
 def is_method_without_args(func):
